@@ -1,6 +1,7 @@
 """Confluence API client."""
 
 import logging
+from turtle import title
 from atlassian import Confluence
 from config import load_config
 from confluence.models import Page, Space, SearchResult
@@ -36,6 +37,25 @@ class ConfluenceClient:
             content=data["body"]["storage"]["value"],
             url=data["_links"]["webui"],
             version=data["version"]["number"],
+        )
+    
+    def get_page_by_title(self, space_key: str, title: str) -> Page:
+        """Get a page by its title and space key."""
+        logger.info(f"Fetching page '{title}' in space {space_key}")
+        data = self.client.get_page_by_title(
+        space=space_key,
+        title=title,
+        expand="body.storage,version"
+        )
+        if not data:
+            raise ValueError(f"Page '{title}' not found in space '{space_key}'")
+        return Page(
+        id=str(data["id"]),
+        title=data["title"],
+        space_key=data["space"]["key"],
+        content=data["body"]["storage"]["value"],
+        url=data["_links"]["webui"],
+        version=data["version"]["number"],
         )
 
     def get_pages_in_space(self, space_key: str, limit: int = 10) -> list[Page]:
