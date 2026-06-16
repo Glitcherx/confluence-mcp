@@ -48,4 +48,7 @@ CONFLUENCE_PAT="your-api-token"
 | `get_page` | Retrieve a Confluence page by ID |
 | `get_pages_in_space` | List all pages in a space |
 | `get_spaces` | List all available spaces |
+| `get_page_by_title` | Find a page by title and space key |
+| `create_page` | Create a new Confluence page |
+| `add_comment` | Add a comment to a page |
 | `search_confluence` | Search pages by text query |
