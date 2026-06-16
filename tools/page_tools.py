@@ -52,6 +52,27 @@ def register_page_tools(mcp: FastMCP):
             }
             for page in pages
         ]
+    
+    @mcp.tool()
+    def create_page(space_key: str, title: str, content: str, parent_id: str = None) -> dict:
+        """
+        Create a new Confluence page.
+
+        Args:
+            space_key: The key of the space to create the page in
+            title: The title of the new page
+            content: The content of the page in HTML format
+            parent_id: Optional ID of the parent page
+        """
+        logger.info(f"Tool called: create_page '{title}' in {space_key}")
+        page = client.create_page(space_key, title, content, parent_id)
+        return {
+            "id": page.id,
+            "title": page.title,
+            "space_key": page.space_key,
+            "url": page.url,
+            "version": page.version,
+        }
 
     @mcp.tool()
     def get_spaces(limit: int = 10) -> list[dict]:
@@ -71,3 +92,23 @@ def register_page_tools(mcp: FastMCP):
             }
             for space in spaces
         ]
+    
+    @mcp.tool()
+    def get_page_by_title(space_key: str, title: str) -> dict:
+        """
+        Get a Confluence page by its title and space key.
+
+        Args:
+            space_key: The key of the space (e.g. 'ENG', 'SD')
+            title: The exact title of the page
+        """
+        logger.info(f"Tool called: get_page_by_title '{title}' in {space_key}")
+        page = client.get_page_by_title(space_key, title)
+        return {
+            "id": page.id,
+            "title": page.title,
+            "space_key": page.space_key,
+            "content": page.content,
+            "url": page.url,
+            "version": page.version,
+        }

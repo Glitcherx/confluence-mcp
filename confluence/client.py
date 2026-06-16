@@ -57,6 +57,24 @@ class ConfluenceClient:
         url=data["_links"]["webui"],
         version=data["version"]["number"],
         )
+    
+    def create_page(self, space_key: str, title: str, content: str, parent_id: str = None) -> Page:
+        """Create a new Confluence page."""
+        logger.info(f"Creating page '{title}' in space {space_key}")
+        data = self.client.create_page(
+            space=space_key,
+            title=title,
+            body=content,
+            parent_id=parent_id,
+        )
+        return Page(
+            id=str(data["id"]),
+            title=data["title"],
+            space_key=data["space"]["key"],
+            content=content,
+            url=data["_links"]["webui"],
+            version=data["version"]["number"],
+        )
 
     def get_pages_in_space(self, space_key: str, limit: int = 10) -> list[Page]:
         """Get multiple pages from a space."""
