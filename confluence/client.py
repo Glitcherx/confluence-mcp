@@ -126,3 +126,13 @@ class ConfluenceClient:
                 excerpt=item.get("excerpt", ""),
             ))
         return results
+    
+    def add_comment(self, page_id: str, comment: str) -> dict:
+        """Add a comment to a Confluence page."""
+        logger.info(f"Adding comment to page {page_id}")
+        data = self.client.add_comment(page_id, comment)
+        return {
+            "id": str(data["id"]),
+            "page_id": page_id,
+            "content": comment,
+        }

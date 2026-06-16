@@ -1,5 +1,6 @@
 """Main entry point for the Confluence MCP server."""
 
+from tools.comment_tools import register_comment_tools
 import logging
 from fastmcp import FastMCP
 from tools.page_tools import register_page_tools
@@ -23,6 +24,7 @@ mcp = FastMCP(
 # Register all tools
 register_page_tools(mcp)
 register_search_tools(mcp)
+register_comment_tools(mcp)
 
 
 if __name__ == "__main__":
